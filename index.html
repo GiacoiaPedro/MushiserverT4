@@ -1,361 +1,1504 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mushiserver T4</title>
-    <link href="templatemo-3d-coverflow.css" rel="stylesheet">
-    <link rel="icon" href="images/icon.png" type="image/png">
-
+    <title>Mushi Server T3</title>
+    <link rel="icon" href="assets/icon.png" type="image/png">
     <style>
+
+        /* Fuentes */
     @font-face {
-      font-family: 'Minecraft';
-      src: url('images/minecraft.woff2') format('woff2'),
-           url('images/minecraft.woff') format('woff');
-      font-weight: normal;
-      font-style: normal;
+        font-family: 'Minecraft';
+        src: url('assets/minecraft.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
     }
-
-    .home-section {
-  text-align: center;
-  padding: 80px 20px;
-}
-
-.home-section h1 {
-  font-family: 'Minecraft', sans-serif;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-}
-
-.home-section p {
-  font-size: 1.2rem;
-  margin: 10px 0;
-}
-
-.gallery {
-  margin-top: 40px;
-}
-
-.gallery h2 {
-  font-family: 'Minecraft', sans-serif;
-  margin-bottom: 20px;
-}
-
-.gallery-images {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.gallery-images img {
-  width: 250px;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  transition: transform 0.3s ease;
-}
-
-.gallery-images img:hover {
-  transform: scale(1.05);
-}
-
     
-    body {
-      font-family: 'Minecraft', sans-serif;
+    @font-face {
+        font-family: 'MinecraftLegible';
+        src: url('assets/minecraft-legible.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
     }
 
-    h1, h2, h3 {
-      font-family: 'Minecraft', cursive;
+    /* Color general */
+    body, 
+    p, h1, h2, h3, h4, h5, h6,
+    .section-title, .section-subtitle,
+    .card, .list-item, .spec-label, .spec-value,
+    .event-label, .event-date, .upload-note,
+    .sidebar-item, .nav-menu a {
+        color: #ffffff !important;
+        font-family: 'MinecraftLegible', Arial, sans-serif;
     }
 
-      body, p, a, li, input, textarea, button {
-      font-family: Arial, Helvetica, sans-serif;
+    /* Títulos con fuente minecraft pura */
+    .page-title, .section-title, .section-subtitle,
+    .minecraft-button, .logo {
+        font-family: 'Minecraft', 'MinecraftLegible', Arial, sans-serif;
     }
 
-  </style>
+    /* Enlaces */
+    a:not(.minecraft-button) {
+    color: #ffffff !important;  /* Cambiado de #5af a #ffffff (blanco) */
+    text-decoration: none;
+    transition: opacity 0.2s;   /* Cambiado de color a opacity para el hover */
+}
+
+a:not(.minecraft-button):hover {
+    opacity: 0.8;               /* Efecto hover más sutil con opacidad */
+    text-decoration: underline;
+}
+
+    /* Botones */
+    .minecraft-button {
+        color: white !important;
+        font-family: 'Minecraft', 'MinecraftLegible', Arial, sans-serif;
+    }
+
+    /* Ajustes para mejor legibilidad */
+    p, li {
+        line-height: 1.6;
+        font-size: 16px;
+    }
+
+    /* Contraste mejorado */
+    .card {
+        background-color: rgba(61, 61, 59, 0.8);
+        backdrop-filter: blur(4px);
+    }
+
+        /* Mejora para los botones */
+            .minecraft-button {
+                min-width: 160px; /* Ancho mínimo para consistencia */
+                text-align: center;
+                margin: 10px 0; /* Margen superior/inferior */
+            }
+
+            /* Contenedor flexible para botones */
+            .button-group {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 16px;
+                margin-top: 24px;
+            }
+
+
+            /* Base styles - Añade esto al inicio de tu CSS */
+            :root {
+    --text-color: #ffffff;
+    --link-color: #ffffff;      /* Cambiado de #5af a #ffffff */
+    --button-text: white;
+}
+    
+    body,
+    p, h1, h2, h3, h4, h5, h6,
+    .section-title, .section-subtitle,
+    .card, .list-item, .spec-label, .spec-value,
+    .event-label, .event-date, .upload-note {
+        color: var(--text-color) !important;
+    }
+    
+    a:not(.minecraft-button) {
+        color: var(--link-color) !important;
+    }
+    
+    /* Excepciones (elementos que deben mantener su color) */
+    .minecraft-button {
+        color: var(--button-text) !important;
+    }
+    
+    .close {
+        color: white !important;
+    }
+    
+    /* Ajustes para mejor contraste */
+    .upload-note, .spec-label {
+        opacity: 0.8;
+    }
+
+        @font-face {
+            font-family: 'MinecraftTen';
+            src: url('assets/minecraft-ten.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'MinecraftFive';
+            src: url('assets/minecraft-five.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .grid-2 {
+                display: grid;
+                grid-template-columns: 1fr 1fr; /* Asegura que ambas columnas tengan el mismo ancho */
+                align-items: center; /* Alinea verticalmente */
+                gap: 20px; /* Espacio entre columnas */
+            }
+
+            .section-title {
+                font-size: 24px; /* Reduce el tamaño si es muy grande */
+                text-align: center;
+            }
+
+            p {
+                font-size: 16px; /* Ajusta si es necesario */
+                line-height: 1.5;
+            }
+
+
+        
+
+            body {
+                background-image: url('assets/fondo.png');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-color: #3D3D3B;
+                height: 100vh;
+                margin: 0;
+            }
+
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header styles */
+        .main-header {
+            background-color: #1D1D1B;
+            padding: 15px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-family: 'MinecraftTen', Arial, sans-serif;
+            font-size: 24px;
+            color: #FFFFFF;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin: 0 15px;
+        }
+
+        .nav-menu a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 16px;
+            text-transform: uppercase;
+            font-weight: bold;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        .nav-menu a:hover::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #5af;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-actions a {
+            color: #FFFFFF;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        /* Main content styles */
+        .page-title {
+            text-align: center;
+            padding: 40px 0;
+            font-family: 'MinecraftTen', Arial, sans-serif;
+            font-size: 48px;
+            color: #FFFFFF;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .content-wrapper {
+            display: flex;
+            margin-bottom: 50px;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #2D2D2B;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #3D3D3B;
+            text-decoration: none;
+            color: #FFFFFF;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar-item:hover, .sidebar-item.active {
+            background-color: #3D3D3B;
+        }
+
+        .sidebar-item img {
+            width: 32px;
+            height: 32px;
+            margin-right: 15px;
+            image-rendering: pixelated;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 20px;
+            background-color: #2D2D2B;
+            border-radius: 4px;
+            padding: 20px;
+        }
+
+        /* Tab styles */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section-title {
+            font-family: 'MinecraftTen', Arial, sans-serif;
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #FFFFFF;
+            text-transform: uppercase;
+        }
+
+        .section-subtitle {
+            font-family: 'MinecraftTen', Arial, sans-serif;
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #FFFFFF;
+        }
+
+        .minecraft-button {
+            display: inline-block;
+            background-color: #5af;
+            color: white;
+            border: 2px solid #3a8;
+            border-bottom: 4px solid #297;
+            padding: 8px 16px;
+            font-family: 'MinecraftFive', Arial, sans-serif;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-size: 14px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .minecraft-button:hover {
+            background-color: #7bf;
+        }
+
+        .minecraft-button:active {
+            border-bottom-width: 2px;
+            transform: translateY(2px);
+        }
+
+        .discord-button {
+            background-color: #5865F2;
+            border: 2px solid #4855E2;
+            border-bottom: 4px solid #3845D2;
+        }
+
+        .discord-button:hover {
+            background-color: #6975FF;
+        }
+
+        /* Grid layouts */
+        .grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr;
+        }
+
+        .grid-3 {
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .grid-3 {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        /* Card styles */
+        .card {
+            background-color: #3D3D3B;
+            padding: 16px;
+            border-radius: 4px;
+        }
+
+        /* List styles */
+        .list-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .list-item-marker {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background-color: #5af;
+            margin-right: 12px;
+            margin-top: 4px;
+        }
+
+        .list-item-marker.red {
+            background-color: #f55;
+        }
+
+        /* Flex utilities */
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        /* Image placeholders */
+        .image-container {
+            width: 100%;
+            height: 200px;
+            background-color: #222;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #5af;
+            font-family: 'MinecraftFive', Arial, sans-serif;
+        }
+
+        /* Upload area */
+        .upload-area {
+            background-color: #222;
+            border: 2px dashed #555;
+            border-radius: 4px;
+            padding: 16px;
+            text-align: center;
+            color: #ccc;
+            margin-bottom: 16px;
+        }
+
+        /* Mod styles */
+        .mod-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .mod-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #5af;
+            border-radius: 4px;
+            margin-right: 12px;
+        }
+
+        /* Footer styles */
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #aaa;
+            font-size: 14px;
+            margin-top: 40px;
+            border-top: 1px solid #333;
+        }
+
+        footer a {
+            color: #aaa;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            color: white;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .mobile-menu-button {
+                display: block;
+            }
+        }
+
+        /* Mobile menu button (hidden by default) */
+        .mobile-menu-button {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .header-actions a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            text-transform: none; /* Remueve mayúsculas si lo prefieres */
+        }
+
+        .header-actions i.fab {
+            font-size: 18px;
+            color: #5865F2; /* Color oficial de Discord */
+        }
+
+
+    </style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 </head>
-
- 
-
 <body>
     <!-- Header -->
-    <header class="header" id="header">
-        <a href="#home" class="logo-container">
-            <div class="logo">
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <rect x="10" y="25" width="15" height="50" fill="url(#grad1)" transform="rotate(-15 17.5 50)" />
-                    <rect x="35" y="15" width="15" height="70" fill="url(#grad1)" />
-                    <rect x="60" y="25" width="15" height="50" fill="url(#grad1)" transform="rotate(15 67.5 50)" />
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="url(#grad1)" stroke-width="2" opacity="0.5" />
-                </svg>
+    <header class="main-header">
+        <div class="header-container">
+            <a href="#" class="logo">
+                <img src="assets/grass-block.png" alt="MushiServer Logo">
+                MushiServer
+            </a>
+            
+            <ul class="nav-menu">
+                <li><a href="#inicio" onclick="openTab('inicio')">Inicio</a></li>
+                <li><a href="#guia" onclick="openTab('guia')">Guía</a></li>
+                <li><a href="#galeria" onclick="openTab('galeria')">Galería</a></li>
+                <li><a href="#servidor" onclick="openTab('servidor')">Servidor</a></li>
+                <li><a href="#reglas" onclick="openTab('reglas')">Reglas</a></li>
+                <li><a href="#admin" onclick="openTab('admin')">Admin</a></li>
+            </ul>
+            
+            <div class="header-actions">
+                <a href="https://discord.gg/s3xPH9jN" target="_blank">
+                    <i class="fab fa-discord"></i> Discord
+                </a>
             </div>
-            <div class="logo-text">Mushiserver</div>
-        </a>
-        
-        <nav class="main-menu" id="mainMenu">
-            <a href="#inicio" class="menu-item active">Inicio</a>
-            <a href="#sobre-nosotros" class="menu-item">Sobre nosotros</a>
-            <a href="#guia" class="menu-item">Guía de instalacion</a>
-            <a href="#reglas" class="menu-item">Reglas</a>
-            <a href="https://discord.gg/KHyw6nmT" target="_blank" rel="noopener noreferrer" class="menu-item external">Discord</a>
-        </nav>
-        
-        <div class="menu-toggle" id="menuToggle">
-            <span></span>
-            <span></span>
-            <span></span>
+            
+            <button class="mobile-menu-button">☰</button>
         </div>
     </header>
 
-   <!-- Home Section -->
-<section id="inicio" class="section home-section">
-  <div class="home-content">
-    <h1>Bienvenidos a Mushiserver T4</h1>
-    <p>
-      El <strong>1 de noviembre de 2025</strong> comienza una nueva aventura.  
-      Esta temporada será <strong>con mods</strong>, pensada para que todos la pasen bien 
-      y disfruten juntos de la experiencia.
-    </p>
-    <p>
-      🔹 Los mods todavía no están definidos.  
-      🔹 La versión de Minecraft también está por confirmarse.  
-      🔹 ¡Podés dejar tus sugerencias en el canal <em>#proposiciones-de-mods</em> de nuestro Discord!
-    </p>
+    <!-- Main Title -->
+    <h1 class="page-title">MushiServer</h1>
 
-    <div class="gallery">
-      <h2>Recuerdos de Temporadas Anteriores</h2>
-      <div class="gallery-images">
-        <img src="images/temporada1.jpg" alt="Temporada 1">
-        <img src="images/temporada2.jpg" alt="Temporada 2">
-        <img src="images/temporada3.jpg" alt="Temporada 3">
-      </div>
-    </div>
-  </div>
-</section>
-
-
-    <!-- About Section -->
-    <section id="about" class="section">
-        <div class="about-content">
-            <div class="about-header">
-                <h2>Discover 3D Coverflow</h2>
-                <p>A revolutionary way to showcase your visual content with stunning 3D effects and seamless interactions</p>
+    <!-- Content Wrapper -->
+    <div class="container">
+        <div class="content-wrapper">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <a href="#inicio" class="sidebar-item active" onclick="openTab('inicio')">
+                    <img src="assets/grass-block.png" alt="Inicio">
+                    Inicio
+                </a>
+                <a href="#guia" class="sidebar-item" onclick="openTab('guia')">
+                    <img src="assets/book.png" alt="Guía">
+                    Guía de Instalación
+                </a>
+                <a href="#galeria" class="sidebar-item" onclick="openTab('galeria')">
+                    <img src="assets/frame.png" alt="Galería">
+                    Galería
+                </a>
+                <a href="#servidor" class="sidebar-item" onclick="openTab('servidor')">
+                    <img src="assets/server.png" alt="Servidor">
+                    Sobre el Servidor
+                </a>
+                <a href="#reglas" class="sidebar-item" onclick="openTab('reglas')">
+                    <img src="assets/command-block.png" alt="Reglas">
+                    Reglas
+                </a>
+                <a href="#admin" class="sidebar-item" onclick="openTab('admin')">
+                <img src="assets/command-block.png" alt="Admin">
+                  Admin
+                </a>
             </div>
-            
-            <div class="about-main">
-                <div class="about-visual">
-                    <div class="showcase-display">
-                        <div class="showcase-main">
-                            <div class="corner-decoration top-left"></div>
-                            <div class="corner-decoration bottom-right"></div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Tab Inicio -->
+                <div id="inicio" class="tab-content active">
+                    <h2 class="section-title">¡Bienvenido a MushiServer!</h2>
+                    
+                    <div class="grid grid-2">
+                        <div>
+                            <p>
+                                Estamos emocionados de anunciar el inicio de una nueva temporada de Minecraft en la versión 1.21.5
+                                MushiServer es una comunidad amigable donde podrás construir, explorar y divertirte con amigos.
+                            </p>
+                            <p>
+                                La temporada comenzará el 12 de abril de 2025. ¡Prepárate para la aventura!
+                            </p>
                             
-                            <div class="showcase-logo">
-                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="10" y="25" width="15" height="50" fill="white" transform="rotate(-15 17.5 50)" opacity="0.9" />
-                                    <rect x="35" y="15" width="15" height="70" fill="white" />
-                                    <rect x="60" y="25" width="15" height="50" fill="white" transform="rotate(15 67.5 50)" opacity="0.9" />
-                                    <circle cx="50" cy="50" r="45" fill="none" stroke="white" stroke-width="2" opacity="0.3" />
-                                </svg>
+                                                    <!-- Reemplaza esto en la sección "Inicio" -->
+                            <div style="margin-top: 24px; display: flex; flex-wrap: wrap; gap: 16px; justify-content: flex-start;">
+                                <a href="#guia" class="minecraft-button" onclick="openTab('guia')">
+                                    Cómo Jugar
+                                </a>
+                                <a href="https://discord.gg/s3xPH9jN" target="_blank" class="minecraft-button discord-button">
+                                    Únete al Discord
+                                </a>
                             </div>
-                            
-                            <h3 class="showcase-title">3D Coverflow</h3>
-                            <p class="showcase-subtitle">Transform your image galleries into immersive 3D experiences</p>
-                            
-                            <div class="showcase-badges">
-                                <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noopener noreferrer" class="badge">HTML5</a>
-                                <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank" rel="noopener noreferrer" class="badge">CSS3</a>
-                                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener noreferrer" class="badge">JavaScript</a>
-                                <a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design" target="_blank" rel="noopener noreferrer" class="badge">Responsive</a>
+                        </div>
+                        <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+                            <div class="image-container" style="aspect-ratio: 16/9; max-width: 800px;">
+                                <img src="assets/intro.png" alt="Logo MushiServer" style="width: 100%; height: 100%; object-fit: cover;">
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="about-info">
-                    <h3>Elevate Your Gallery Experience</h3>
-                    <p>3D Coverflow is brought to you by TemplateMo. Transform the way you present images with our cutting-edge 3D coverflow technology. Create immersive, interactive galleries that captivate your audience and leave a lasting impression.</p>
-                    <p>Whether you're showcasing portfolio pieces, product images, or creating an interactive story, our 3D coverflow brings your content to life with fluid animations and intuitive controls.</p>
-                    
-                    <ul class="feature-list">
-                        <li>Smooth 3D transitions with hardware acceleration</li>
-                        <li>Touch-enabled navigation for mobile devices</li>
-                        <li>Customizable autoplay and timing controls</li>
-                        <li>Keyboard navigation support</li>
-                        <li>Reflection effects for added depth</li>
+
+               <!-- Tab Guía -->
+<div id="guia" class="tab-content">
+    <h2 class="section-title">Guía de Instalación</h2>
+    
+    <!-- Enlace MEGA destacado - Versión mejorada -->
+    <div class="card" style="
+        background-color: #3a3a3a; 
+        border-left: 4px solid #4CAF50; 
+        margin-bottom: 24px; 
+        text-align: center;
+    ">
+        <h3 class="section-subtitle" style="color: #ffffff; margin-bottom: 12px;">
+            Descarga todo en un solo paquete
+        </h3>
+        <p style="color: #ffffff; margin-bottom: 8px;">
+            Puedes descargar todos los archivos necesarios desde nuestro repositorio en MEGA:
+        </p>
+        <a href="https://mega.nz/folder/MRNXCABI#gB6s-8XQJgUsIbC4jgMSDQ" 
+           target="_blank" 
+           style="
+               color: #ffffff; 
+               font-weight: bold; 
+               text-decoration: none;
+               background-color: #4CAF50;
+               padding: 8px 16px;
+               border-radius: 4px;
+               display: inline-block;
+               margin-top: 8px;
+           ">
+           Repositorio completo MushiServer
+        </a>
+    </div>
+    
+    <div class="grid grid-2">
+        <div>
+            <div class="card">
+                <h3 class="section-subtitle">1. Instalar Hamachi</h3>
+                <p>
+                    Para conexión directa al servidor:
+                    <ul style="padding-left: 20px; margin-top: 10px;">
+                        <li>Instala Hamachi desde el link de MEGA</li>
+                        <li>Crea cuenta o inicia sesión</li>
+                        <li>Únete a una de nuestras redes</li>
                     </ul>
-                    
-                    <a href="#contact" class="cta-button">
-                        Start Your Project
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M5 12h14m-7-7l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/>
-                        </svg>
-                    </a>
-                </div>
+                </p>
+            </div>
+            <br>
+            <div class="card">
+                <h3 class="section-subtitle">2. Instalar Java</h3>
+                <p>
+                    Requerido para Minecraft 1.21.5:
+                    <ul style="padding-left: 20px; margin-top: 10px;">
+                        <li>Descarga Java desde el link de MEGA</li>
+                        <li>Verifica instalación con <code style="background: #222; padding: 2px 4px; border-radius: 3px;">java -version</code></li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+        
+        <div>
+            <div class="card">
+                <h3 class="section-subtitle">3. Usar SK Launcher</h3>
+                <p>
+                    Alternativa al launcher oficial:
+                    <ul style="padding-left: 20px; margin-top: 10px;">
+                        <li>Descarga desde el link de MEGA</li>
+                        <li>Ejecuta en modo <strong>"sin conexión"</strong></li>
+                        <li>Instala la version 1.21.5</li>
+                    </ul>
+                </p>
+            </div>
+            <br>
+            <div class="card">
+                <h3 class="section-subtitle">4. Conectarse al Servidor</h3>
+                <p>
+                    <ul style="padding-left: 20px; margin-top: 10px;">
+                        <li><strong>Hamachi:</strong> Usa la IP que aparece en Hamachi</li>
+                        <li><strong>Versión:</strong> Minecraft 1.21.5</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div style="margin-top: 32px; text-align: center;">
+        <a href="https://discord.gg/s3xPH9jN" target="_blank" class="minecraft-button discord-button">
+            ¿Necesitas ayuda? Únete a nuestro Discord
+        </a>
+    </div>
+</div>
+
+<style>
+    /* Estilos adicionales para mejorar la lista */
+    ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
+    
+    ul li {
+        position: relative;
+        padding-left: 20px;
+        margin-bottom: 8px;
+    }
+    
+    ul li:before {
+        content: "•";
+        color: #5af;
+        position: absolute;
+        left: 0;
+    }
+    
+    /* Iconos para enlaces */
+    .bi {
+        margin-right: 5px;
+    }
+</style>
+
+<!-- Tab Galería -->
+<div id="galeria" class="tab-content">
+    <h2 class="section-title">Galería de la Comunidad</h2>
+
+    <div class="grid grid-3">
+        <!-- Imágenes existentes -->
+        <div class="card gallery-item">
+            <div class="image-container">
+                <img src="assets/server t1.jpg" alt="Temporada 1" class="gallery-img" loading="lazy" onclick="openModal(this)">
+            </div>
+            <p class="image-caption">Temporada 1</p>
+        </div>
+
+        <div class="card gallery-item">
+            <div class="image-container">
+                <img src="assets/server t2.png" alt="Temporada 2" class="gallery-img" loading="lazy" onclick="openModal(this)">
+            </div>
+            <p class="image-caption">
+                Temporada 2<br>
+                <a href="https://giacoiapedro.github.io/MushiServer/#fotos" target="_blank" style="color: #5af; font-size: 0.8em;">
+                    Ver más fotos de esta temporada
+                </a>
+            </p>
+        </div>
+
+        <div class="card gallery-item">
+            <div class="image-container">
+                <img src="assets/temporada 3.jpg" alt="Temporada 3" class="gallery-img" loading="lazy" onclick="openModal(this)">
+            </div>
+            <p class="image-caption">Temporada 3</p>
+        </div>
+
+        <!-- Card para compartir -->
+        <div class="card share-card">
+            <h3 class="section-subtitle">Comparte tus Capturas</h3>
+            <p>¡Sube tus mejores momentos, construcciones y aventuras en MushiServer!</p>
+            
+            <div class="upload-area">
+                <p>Para compartir tus capturas, envíalas a través de nuestro Discord</p>
+                <a href="https://discord.gg/s3xPH9jN" target="_blank" class="minecraft-button discord-button">
+                    Unirse a Discord
+                </a>
             </div>
             
-            <div class="stats-section">
-                <div class="stat-item">
-                    <div class="stat-number">60fps</div>
-                    <div class="stat-label">Smooth Performance</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">100%</div>
-                    <div class="stat-label">Responsive Design</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">3D</div>
-                    <div class="stat-label">Visual Effects</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">∞</div>
-                    <div class="stat-label">Customization</div>
-                </div>
-            </div>
+            <p class="upload-note">
+                Las imágenes y videos serán revisados antes de ser publicados.<br>
+                Formatos aceptados: JPG, PNG, GIF, MP4.
+            </p>
         </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="section">
-        <div class="contact-content">
-            <div class="contact-header">
-                <h2>Get In Touch</h2>
-                <p>Have a project in mind? Let's create something amazing together.</p>
-            </div>
-            
-            <div class="contact-container">
-                <div class="contact-info-section">
-                    <h3>Let's Connect</h3>
-                    <p>We're here to help bring your vision to life. Whether you need a stunning gallery, a complete website redesign, or custom development work, we'd love to hear from you.</p>
-                    
-                    <div class="contact-details">
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                                </svg>
-                            </div>
-                            <div class="contact-text">
-                                <h4>Email</h4>
-                                <p>hello@3dcoverflow.com</p>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                                </svg>
-                            </div>
-                            <div class="contact-text">
-                                <h4>Phone</h4>
-                                <p>+1 (555) 123-4567</p>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                                </svg>
-                            </div>
-                            <div class="contact-text">
-                                <h4>Address</h4>
-                                <p>123 Design Street, San Francisco, CA 94102</p>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                </svg>
-                            </div>
-                            <div class="contact-text">
-                                <h4>Business Hours</h4>
-                                <p>Monday - Friday: 9:00 AM - 6:00 PM PST</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="social-links">
-                        <h4>Follow Us</h4>
-                        <div class="social-buttons">
-                            <a href="#" class="social-btn" title="Facebook">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                                </svg>
-                            </a>
-                            <a href="#" class="social-btn" title="Twitter">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                                </svg>
-                            </a>
-                            <a href="#" class="social-btn" title="LinkedIn">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                                </svg>
-                            </a>
-                            <a href="#" class="social-btn" title="Instagram">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1112.324 0 6.162 6.162 0 01-12.324 0zM12 16a4 4 0 110-8 4 4 0 010 8zm4.965-10.405a1.44 1.44 0 112.881.001 1.44 1.44 0 01-2.881-.001z"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="contact-form-section">
-                    <form class="contact-form" onsubmit="handleSubmit(event)">
-                        <div class="form-group">
-                            <label for="name">Your Name</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="subject">Subject</label>
-                            <input type="text" id="subject" name="subject" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" required></textarea>
-                        </div>
-                        <button type="submit" class="submit-btn">Send Message</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-copyright">
-                © 2025 3D Coverflow. All rights reserved. | Designed by <a href="https://templatemo.com" target="_blank" rel="noopener noreferrer">TemplateMo</a>
-            </div>
-            <div class="footer-links">
-                <a href="#privacy" onclick="event.preventDefault(); alert('Privacy Policy page would go here');">Privacy Policy</a>
-                <a href="#terms" onclick="event.preventDefault(); alert('Terms of Service page would go here');">Terms of Service</a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scroll to top button -->
-    <div class="scroll-to-top" id="scrollToTop">
-        <span>↑</span>
     </div>
 
-<script src="templatemo-3d-coverflow-scripts.js"></script>
+    <!-- NUEVA SECCIÓN DE TEMPORADA 3 -->
+    <h3 class="section-subtitle" style="margin-top: 3rem;">Más Fotos de la Temporada 3</h3>
+
+    <div class="grid grid-3">
+        <!-- Imagen 1 -->
+        <div class="card gallery-item">
+            <div class="image-container">
+                <img src="assets\2025-04-14_14.16.37.png" alt="Temporada 3 - Imagen 1" class="gallery-img" loading="lazy" onclick="openModal(this)">
+            </div>
+            <p class="image-caption">Casa Koda</p>
+        </div>
+
+        <!-- Imagen 2 -->
+        <div class="card gallery-item">
+            <div class="image-container">
+                <img src="assets\2025-04-19_20.19.21.png" alt="Temporada 3 - Imagen 2" class="gallery-img" loading="lazy" onclick="openModal(this)">
+            </div>
+            <p class="image-caption">Exploracion</p>
+        </div>
+
+        <!-- Imagen 3 -->
+        <div class="card gallery-item">
+            <div class="image-container">
+                <img src="assets\2025-04-22_21.40.04.png" alt="Temporada 3 - Imagen 3" class="gallery-img" loading="lazy" onclick="openModal(this)">
+            </div>
+            <p class="image-caption">Casa Justin</p>
+        </div>
+
+        <!-- Imagen 4 -->
+        <div class="card gallery-item">
+            <div class="image-container">
+                <img src="assets\2025-04-26_13.31.26.png" alt="Temporada 3 - Imagen 4" class="gallery-img" loading="lazy" onclick="openModal(this)">
+            </div>
+            <p class="image-caption">Amanecer</p>
+        </div>
+
+        <!-- Imagen 5 -->
+        <div class="card gallery-item">
+            <div class="image-container">
+                <img src="assets\2025-04-26_21.58.34.png" alt="Temporada 3 - Imagen 5" class="gallery-img" loading="lazy" onclick="openModal(this)">
+            </div>
+            <p class="image-caption">Mushi vecindad</p>
+        </div>
+
+        <!-- Imagen 6 -->
+        <div class="card gallery-item">
+            <div class="image-container">
+                <img src="assets\2025-04-28_13.56.41.png" alt="Temporada 3 - Imagen 6" class="gallery-img" loading="lazy" onclick="openModal(this)">
+            </div>
+            <p class="image-caption">Mushicipalidad</p>
+        </div>
+
+        <!-- Imagen 7 -->
+        <div class="card gallery-item">
+            <div class="image-container">
+                <img src="assets\2025-05-01_00.14.55.png" alt="Temporada 3 - Imagen 7" class="gallery-img" loading="lazy" onclick="openModal(this)">
+            </div>
+            <p class="image-caption">Casa diegote</p>
+        </div>
+
+        <!-- Imagen 8 -->
+        <div class="card gallery-item">
+            <div class="image-container">
+                <img src="assets\2025-05-01_11.47.05.png" alt="Temporada 3 - Imagen 8" class="gallery-img" loading="lazy" onclick="openModal(this)">
+            </div>
+            <p class="image-caption">Mapa</p>
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    /* Estilos mejorados para la galería */
+    .gallery-item {
+        transition: transform 0.3s ease;
+    }
+    
+    .gallery-item:hover {
+        transform: translateY(-5px);
+    }
+    
+    .image-container {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
+        background-color: #1a1a1a;
+        cursor: pointer;
+    }
+    
+    .gallery-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    
+    .gallery-img:hover {
+        transform: scale(1.05);
+    }
+    
+    .image-caption {
+        text-align: center;
+        margin-top: 10px;
+        color: #ddd;
+        font-size: 14px;
+    }
+    
+    .share-card {
+        grid-column: span 3;
+        text-align: center;
+    }
+    
+    .upload-area {
+        padding: 20px;
+        margin: 15px 0;
+        background-color: #1a1a1a;
+        border-radius: 8px;
+        border: 2px dashed #444;
+    }
+    
+    .upload-note {
+        color: #999;
+        font-size: 13px;
+        margin-top: 15px;
+        line-height: 1.4;
+    }
+    
+    /* Estilos mejorados para el modal */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .modal.show {
+        display: flex;
+        opacity: 1;
+    }
+    
+    .modal-container {
+        position: relative;
+        max-width: 90%;
+        max-height: 90%;
+        text-align: center;
+    }
+    
+    .modal-content {
+        max-width: 100%;
+        max-height: 80vh;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    }
+    
+    .close {
+        position: absolute;
+        top: -40px;
+        right: -10px;
+        color: white;
+        font-size: 35px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+    
+    .close:hover {
+        color: #5af;
+    }
+    
+    .image-title {
+        color: white;
+        margin-top: 10px;
+        font-size: 18px;
+    }
+    
+    @media (max-width: 768px) {
+        .grid-3 {
+            grid-template-columns: 1fr;
+        }
+        
+        .share-card {
+            grid-column: span 1;
+        }
+        
+        .modal-content {
+            max-height: 60vh;
+        }
+    }
+</style>
+
+<script>
+    // Función para abrir el modal
+    function openModal(imgElement) {
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImg");
+        const modalTitle = document.getElementById("modalTitle");
+        
+        modal.classList.add("show");
+        modalImg.src = imgElement.src;
+        modalTitle.textContent = imgElement.alt;
+        
+        // Deshabilitar scroll de fondo
+        document.body.style.overflow = "hidden";
+    }
+    
+    // Función para cerrar el modal
+    function closeModal(event) {
+        // Evitar que el evento se propague al modal
+        if (event) {
+            if (event.target.classList.contains('modal') || event.target.classList.contains('close')) {
+                const modal = document.getElementById("imageModal");
+                modal.classList.remove("show");
+                
+                // Habilitar scroll de fondo
+                document.body.style.overflow = "auto";
+            }
+        }
+    }
+    
+    // Cerrar con tecla ESC
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Escape") {
+            closeModal();
+        }
+    });
+</script>
+
+                <!-- Tab Servidor - Versión corregida -->
+<div id="servidor" class="tab-content">
+    <h2 class="section-title">Sobre el Servidor</h2>
+    
+    <div class="grid grid-2">
+        <div>
+            <div class="card server-features">
+                <h3 class="section-subtitle">¿Qué esperar?</h3>
+                <ul class="feature-list">
+                    <li class="list-item">
+                        <div class="list-item-marker"></div>
+                        <span>Mundo abierto con generación personalizada</span>
+                    </li>
+                    <li class="list-item">
+                        <div class="list-item-marker"></div>
+                        <span>Economía basada en diamantes y esmeraldas </span>
+                    </li>
+                    <li class="list-item">
+                        <div class="list-item-marker"></div>
+                        <span>Eventos</span>
+                    </li>
+                    <li class="list-item">
+                        <div class="list-item-marker"></div>
+                        <span>Comunidad amigable y colaborativa</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="card server-rules">
+                <h3 class="section-subtitle">Reglas</h3>
+                <ul class="rules-list">
+                    <li class="list-item">
+                        <div class="list-item-marker red"></div>
+                        <span>No griefing ni robo de items</span>
+                    </li>
+                    <li class="list-item">
+                        <div class="list-item-marker red"></div>
+                        <span>Respeta a todos los jugadores</span>
+                    </li>
+                    <li class="list-item">
+                        <div class="list-item-marker red"></div>
+                        <span>No usar hacks ni mods no permitidos</span>
+                    </li>
+                    <li class="list-item">
+                        <div class="list-item-marker red"></div>
+                        <span>No spam ni publicidad no autorizada</span>
+                    </li>
+                    <li class="list-item">
+                        <div class="list-item-marker red"></div>
+                        <span>Leer la sección de reglas para mas información</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div>
+            <div class="card server-specs">
+                <h3 class="section-subtitle">Características Técnicas</h3>
+                <div class="spec-item">
+                    <span class="spec-label">Versión:</span>
+                    <span class="spec-value">Minecraft 1.21.5</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Tipo de Servidor:</span>
+                    <span class="spec-value">Survival sin mods</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Dificultad:</span>
+                    <span class="spec-value">Dificil</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">PvP:</span>
+                    <span class="spec-value">Opcional (Zonas designadas)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Slots:</span>
+                    <span class="spec-value">50 jugadores</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Ubicación del Servidor:</span>
+                    <span class="spec-value">América del Sur</span>
+                </div>
+            </div>
+            
+            <div class="card server-calendar">
+                <h3 class="section-subtitle">Calendario</h3>
+                <div class="calendar-item">
+                    <span class="event-label">Lanzamiento:</span>
+                    <span class="event-date">12 de Abril, 2025</span>
+                </div>
+                <div class="calendar-item">
+                    <span class="event-label">Evento de Inauguración:</span>
+                    <span class="event-date">12 de Abril, 20:00 GMT-3</span>
+                </div>
+                <div class="calendar-item">
+                    <span class="event-label">Finalizacion:</span>
+                    <span class="event-date">12 de mayo, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Estilos mejorados para la sección del servidor */
+    .server-features, .server-rules, .server-specs, .server-calendar {
+        margin-bottom: 24px;
+        padding: 20px;
+    }
+    
+    .feature-list, .rules-list {
+        list-style: none;
+        padding-left: 0;
+    }
+    
+    .list-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+        padding: 8px 0;
+    }
+    
+    .list-item-marker {
+        width: 16px;
+        height: 16px;
+        background-color: #5af;
+        margin-right: 12px;
+        border-radius: 50%;
+    }
+    
+    .list-item-marker.red {
+        background-color: #f55;
+    }
+    
+    .spec-item, .calendar-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        padding: 8px 0;
+        border-bottom: 1px solid #3a3a3a;
+    }
+    
+    .spec-label, .event-label {
+        color: #aaa;
+    }
+    
+    .spec-value, .event-date {
+        font-weight: bold;
+        color: #fff;
+    }
+    
+    @media (max-width: 768px) {
+        .grid-2 {
+            grid-template-columns: 1fr;
+        }
+        
+        .server-features, .server-rules, .server-specs, .server-calendar {
+            margin-bottom: 16px;
+        }
+    }
+</style>
+
+<div id="admin" class="tab-content">
+    <h2 class="section-title">Mención Honorífica</h2>
+    <div class="card" style="text-align: center;">
+        <h3 class="section-subtitle">El Administrador</h3>
+        <p style="margin-bottom: 16px;">
+            En esta temporada, rendimos homenaje a nuestro sabio y justo administrador...
+        </p>
+        <p style="font-style: italic; margin-bottom: 24px;">
+            Como todo buen maestro, camina entre nosotros con el aspecto de un legendario Jedi...
+        </p>
+
+        <div style="margin-bottom: 16px;">
+            <h4 style="margin-top: 24px;">Obi Wan</h4>
+            <!-- SOLO UN CANVAS - ELIMINA EL OTRO -->
+            <canvas id="skin_container" width="300" height="400" style="margin-top: 10px;"></canvas>
+            <p style="color: #aaa; font-size: 14px; margin-top: 10px;">
+                Haz clic derecho en el visor para guardar la skin o verla en 3D.
+            </p>
+            <p style="color: #aaa; font-size: 14px;">
+                Haz clic en la imagen para ver o descargar su skin.
+            </p>
+        </div>
+    </div>
+</div>
+
+
+
+                <!-- Tab Reglas -->
+<!-- Tab Reglas -->
+<div id="reglas" class="tab-content">
+    <h2 class="section-title">Reglas del Servidor</h2>
+  
+    
+    <div class="card" style="background-color: #2a2a28; border-left: 4px solid #5af; margin-bottom: 24px;">
+        <h3 class="section-subtitle">CONVENIO URBANO DE MUSHI SERVER</h3>
+        <p style="font-style: italic; margin-bottom: 16px;">
+            Vigente desde 12 Abril 2025 hasta la finalización del SV.
+        </p>
+        <p>
+            En vísperas de iniciar una nueva aventura veraniega en el server de Don Pepe Giacoia, se va a realizar este presente convenio para designar puntos en común, y regular la actividad urbano-arquitectónica del server.
+        </p>
+    </div>
+
+    <div class="grid grid-2">
+        <div>
+            <div class="card">
+                <h3 class="section-subtitle">Requerimientos para unirse</h3>
+                <ul class="rules-list">
+                    <li class="list-item">
+                        <div class="list-item-marker"></div>
+                        <span>Aceptar jugar al SV en comunidad, entendiendo que forma parte de un todo donde sus acciones alteran al resto</span>
+                    </li>
+                    <li class="list-item">
+                        <div class="list-item-marker"></div>
+                        <span>Mantener conductas decentes en espacios comunes y privados</span>
+                    </li>
+                    <li class="list-item">
+                        <div class="list-item-marker"></div>
+                        <span>Respetar el Código de Urbanidad</span>
+                    </li>
+                    <li class="list-item">
+                        <div class="list-item-marker red"></div>
+                        <span>Prohibido actos de terrorismo, genocidio animal/humano o troleos destructivos</span>
+                    </li>
+                    <li class="list-item">
+                        <div class="list-item-marker red"></div>
+                        <span>Uso de hacks/cheats prohibido - sancionado por mayoría simple (2/3)</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3 class="section-subtitle">Código Urbano</h3>
+                <ul class="rules-list">
+                    <li class="list-item">
+                        <div class="list-item-marker red"></div>
+                        <span>No construcciones voladoras descontextualizadas</span>
+                    </li>
+                    <li class="list-item">
+                        <div class="list-item-marker red"></div>
+                        <span>Prohibido alterar el Skyline negativamente</span>
+                    </li>
+                    <li class="list-item">
+                        <div class="list-item-marker red"></div>
+                        <span>No construir en parcelas ajenas sin consentimiento</span>
+                    </li>
+                    <li class="list-item">
+                        <div class="list-item-marker red"></div>
+                        <span>Prohibidos cubos simples sin ventanas estilo soviético</span>
+                    </li>
+                    <li class="list-item">
+                        <div class="list-item-marker"></div>
+                        <span>Permitido cualquier estilo arquitectónico respetando belleza básica</span>
+                    </li>
+                    <li class="list-item">
+                        <div class="list-item-marker red"></div>
+                        <span>Prohibido modificar zonas comunes sin autorización</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div>
+            <div class="card">
+                <h3 class="section-subtitle">Autoridad de Urbanidad y Estética</h3>
+                <p style="margin-bottom: 12px;">
+                    Conformada por 3 personas elegidas por la comunidad. Decisiones por mayoría simple (2/3).
+                </p>
+                <div class="spec-item">
+                    <span class="spec-label">Competencias:</span>
+                    <ul style="padding-left: 20px; margin-top: 8px;">
+                        <li>Construcción/modificación de calles, caminos y conexiones</li>
+                        <li>Modificaciones al Código de Urbanidad</li>
+                        <li>Resolución de conflictos entre jugadores</li>
+                        <li>Decisiones sobre estética general del SV</li>
+                        <li>Modificación/supresión de construcciones que incumplan normas</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="section-subtitle">Definición de Espacios</h3>
+                <div class="spec-item">
+                    <span class="spec-label" style="color: #5af;">Comunes:</span>
+                    <ul style="padding-left: 20px; margin-top: 8px;">
+                        <li>Caminos, pasillos y accesos a la ciudad</li>
+                        <li>Zona aérea sobre estos elementos</li>
+                        <li>Costas, bahías y zonas marítimas (200 bloques)</li>
+                        <li>Mazmorras y estructuras generadas naturalmente</li>
+                    </ul>
+                </div>
+                <div class="spec-item" style="margin-top: 16px;">
+                    <span class="spec-label" style="color: #5af;">Privados:</span>
+                    <ul style="padding-left: 20px; margin-top: 8px;">
+                        <li>Zonas propiedad de cada jugador (hogar/residencia)</li>
+                        <li>Túneles y canales privados bajo sus casas</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card" style="text-align: center; margin-top: 24px; background-color: #2a2a28;">
+        <h3 class="section-subtitle">YAGAMI LAITO…… KOKOROTO…… MATSUDA…. TOYOTA….</h3>
+        <p style="font-style: italic;">
+            Instrumento confeccionado por JorgeCafruneMC
+        </p>
+    </div>
+</div>
+
+<style>
+    /* Estilos específicos para la sección de Reglas */
+    .rules-list {
+        list-style: none;
+        padding-left: 0;
+    }
+    
+    .list-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 12px;
+        padding: 8px 0;
+    }
+    
+    .list-item-marker {
+        width: 16px;
+        height: 16px;
+        background-color: #5af;
+        margin-right: 12px;
+        margin-top: 4px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+    
+    .list-item-marker.red {
+        background-color: #f55;
+    }
+    
+    .spec-item {
+        margin-bottom: 12px;
+    }
+    
+    .spec-label {
+        color: #5af;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 8px;
+    }
+    
+    @media (max-width: 768px) {
+        .grid-2 {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+        <footer>
+            <p>MushiServer &copy; 2025 - No afiliado con Mojang Studios</p>
+            <div style="margin-top: 16px;">
+                <a href="https://discord.gg/s3xPH9jN" target="_blank">Discord</a>
+                <a href="#Reglas"  onclick="openTab('reglas')">Reglas del Servidor</a>
+            </div>
+        </footer>
+    </div>
+
+        <!-- LIBRERÍA DE SKINVIEW3D -->
+     <script src="assets/skinview3d.min.js"></script>
+
+    <!-- TU SCRIPT CORREGIDO Y ROBUSTO -->
+    <script>
+    let skinViewer = null;
+
+    function openTab(tabName) {
+        // Ocultar y mostrar las pestañas (código sin cambios)
+        const tabContents = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < tabContents.length; i++) {
+            tabContents[i].classList.remove("active");
+        }
+
+        const sidebarItems = document.getElementsByClassName("sidebar-item");
+        for (let i = 0; i < sidebarItems.length; i++) {
+            sidebarItems[i].classList.remove("active");
+            if (sidebarItems[i].getAttribute("href") === "#" + tabName) {
+                sidebarItems[i].classList.add("active");
+            }
+        }
+        
+        const selectedTab = document.getElementById(tabName);
+        if (selectedTab) {
+            selectedTab.classList.add("active");
+        }
+
+        // Si la pestaña es "admin", llamamos a la función que se asegura
+        // de que todo esté listo antes de continuar.
+        if (tabName === "admin") {
+            initializeViewerWhenReady();
+        }
+    }
+
+    function initializeViewerWhenReady() {
+        // Si el visor ya fue creado, no hacemos nada más.
+        if (skinViewer) {
+            return;
+        }
+
+        // **LA LÓGICA CLAVE ESTÁ AQUÍ**
+        // Verificamos si la variable global 'skinview3d' existe.
+        if (typeof skinview3d !== 'undefined') {
+            // ¡Perfecto! La librería está cargada. Ahora podemos inicializar el visor.
+            initSkinViewer();
+        } else {
+            // La librería aún no está lista.
+            // Le pedimos al navegador que vuelva a intentar esta misma función en 100ms.
+            console.log("Esperando a que la librería skinview3d se cargue...");
+            setTimeout(initializeViewerWhenReady, 100);
+        }
+    }
+
+    function initSkinViewer() {
+        const canvas = document.getElementById("skin_container");
+        if (!canvas) {
+            console.error("El canvas 'skin_container' no fue encontrado.");
+            return;
+        }
+
+        try {
+            // Ahora es seguro llamar a 'new skinview3d.SkinViewer'
+            skinViewer = new skinview3d.SkinViewer({
+                canvas: canvas,
+                width: 300,
+                height: 400,
+                skin: 'assets/2022_09_13_obi-wan-20843585.png'
+            });
+
+            skinViewer.animation = new skinview3d.WalkingAnimation();
+            skinViewer.autoRotate = true;
+
+            console.log("Visor de skin inicializado correctamente.");
+        } catch (error) {
+            console.error("Error final al inicializar el visor de skin:", error);
+        }
+    }
+
+    function checkSkinExists() {
+        const skinPath = 'assets/2022_09_13_obi-wan-20843585.png';
+        const img = new Image();
+        img.onload = () => console.log("La skin existe en la ruta especificada.");
+        img.onerror = () => console.error(`Error: No se pudo cargar la skin desde: ${skinPath}`);
+        img.src = skinPath;
+    }
+
+    // El punto de entrada de la aplicación sigue siendo el mismo.
+    document.addEventListener("DOMContentLoaded", () => {
+        openTab("inicio");
+        checkSkinExists();
+    });
+    </script>
+</body>
+</html>
+
 
 </body>
 </html>
